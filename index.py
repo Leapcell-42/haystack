@@ -5,10 +5,12 @@ app = FastAPI()
 
 @app.get("/sherlock")
 def sherlock(q: str):
-    names = q.split(' ')
-    result = subprocess.run(['sherlock'] + names,
+    name = q.split(' ')[0]
+    subprocess.run(['sherlock'] + name,
                             capture_output=True, text=True)
-    return {"result": result.stdout}
+    with open(f'{name}.txt', 'r') as f:
+        result = f.read()
+    return {"result": result}
 
 @app.get("/")
 def main():
